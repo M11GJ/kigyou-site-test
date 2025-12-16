@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NWM10F8HQ3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-NWM10F8HQ3');
+    </script>
+    <meta charset="UTF-8">
+    <title>最近の活動 | 周南公立大学 起業部</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="周南公立大学起業部の最近の活動をご紹介します。">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/favicon.png">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+    <style>
+        /* 既存のスタイル */
+        .page-header {
+            padding-top: 100px;
+            padding-bottom: 4rem;
+            background: #f3f3e9;
+            text-align: center;
+        }
+
+        @media screen and (min-width:700px) {
+            .page-header {
+                padding-top: 150px;
+            }
+        }
+
+        /* 既存の活動リストスタイル */
+        .activity-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--space-large) 5vw;
+        }
+
+        .activity-item {
+            padding: 1.5rem 0;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .activity-item:first-child {
+            padding-top: 0;
+        }
+
+        .activity-date {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-content h4 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0 0 0.5rem 0;
+            color: var(--base-inverse-color);
+            line-height: 1.4;
+        }
+
+        .activity-content p {
+            font-size: 1rem;
+            line-height: 1.7;
+            margin: 0;
+            color: #333;
+        }
+
+        @media screen and (min-width:700px) {
+            .activity-item {
+                display: flex;
+                align-items: flex-start;
+                padding: 2.5rem 0;
+            }
+
+            .activity-date {
+                flex-basis: 150px;
+                flex-shrink: 0;
+                font-size: 1.1rem;
+                font-weight: 700;
+                margin-bottom: 0;
+                padding-top: 0.1em;
+            }
+
+            .activity-content {
+                flex-grow: 1;
+                padding-left: 2rem;
+            }
+        }
+
+        /* 「もっと見る」機能のためのCSS */
+        .activity-item.hidden-activity {
+            display: none;
+        }
+
+        /* ▼ 【修正】ボタンコンテナの共通スタイル ▼ */
+        .btn-container {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 0 !important;
+            border-bottom: none !important;
+            display: none;
+            /* JSで表示を制御 */
+        }
+
+        /* PC表示のflexレイアウトをリセット */
+        @media screen and (min-width:700px) {
+            .btn-container {
+                display: none;
+                /* JSで表示を制御 */
+            }
+        }
+
+
+        /* もっと見るボタン */
+        #loadMoreBtn {
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #loadMoreBtn:hover {
+            background: var(--base-inverse-color);
+        }
+
+        /* ▼ 【追加】しまうボタン ▼ */
+        #collapseBtn {
+            background: #888;
+            /* グレー系の色 */
+            color: #fff;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #collapseBtn:hover {
+            background: #555;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="container">
+
+        <header>
+            <div class="header-left">
+                <h1 id="logo"><a href="index.html"><img src="images/logo.png" alt="周南公立大学 起業部"></a></h1>
+
+                <ul class="header-sns">
+                    <li><a href="https://x.com/zebra_kigyo?lang=ja" target="_blank"><i
+                                class="fa-brands fa-x-twitter"></i></a></li>
+                    <li><a href="https://www.instagram.com/zebra_kigyo/" target="_blank"><i
+                                class="fa-brands fa-instagram"></i></a></li>
+                </ul>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="activity.html">最近の活動</a></li>
+                    <li><a href="index.html#faq">よくある質問</a></li>
+                    <li><a href="index.html#flow">入部までの流れ</a></li>
+                    <li><a href="index.html#about">起業部について</a></li>
+                    <li><a href="contact.html">お問い合わせ</a></li>
+                </ul>
+            </nav>
+        </header>
+        <main id="activity-page">
+
+            <section class="page-header">
+                <h2 class="c">最近の活動<span>Recent Activities</span></h2>
+            </section>
+
+            <div class="activity-container">
+                <!-- 活動データはGoogleスプレッドシートから動的に読み込まれます -->
+                <div class="activity-loading" style="text-align: center; padding: 3rem;">
+                    <p style="color: #888;">読み込み中...</p>
+                </div>
+
+                <div id="load-more-container" class="btn-container">
+                    <button id="loadMoreBtn">もっと見る</button>
+                </div>
+
+                <div id="collapse-container" class="btn-container">
+                    <button id="collapseBtn">しまう</button>
+                </div>
+
+            </div>
+        </main>
+        <footer>
+            <div>
+                <p class="logo"><img src="images/logo.png" alt="周南公立大学 起業部"></p>
+                <ul class="icons">
+                    <li><a href="https://x.com/zebra_kigyo?lang=ja" target="_blank"><i
+                                class="fa-brands fa-x-twitter"></i></a></li>
+                    <li><a href="https://www.instagram.com/zebra_kigyo/" target="_blank"><i
+                                class="fa-brands fa-instagram"></i></a></li>
+                </ul>
+                <small>Copyright&copy; Shunan University Entrepreneurship Club All Rights Reserved.</small>
+            </div>
+
+            <div>
+                <ul>
+                    <li><a href="index.html#about">起業部について</a></li>
+                    <li><a href="index.html#faq">よくある質問</a></li>
+                    <li><a href="index.html#flow">入部までの流れ</a></li>
+                    <li><a href="activity.html">最近の活動</a></li>
+                    <li><a href="contact.html">お問い合わせ</a></li>
+                </ul>
+            </div>
+        </footer>
+    </div>
+    <div id="loading">
+        <img src="images/logo.png" alt="Loading">
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+    </div>
+
+
+    <div id="menubar_hdr">
+        <span></span><span></span><span></span>
+    </div>
+
+
+    <div id="menubar">
+        <p class="logo"><img src="images/logo.png" alt="周南公立大学 起業部"></p>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">ホーム</a></li>
+                <li><a href="activity.html">最近の活動</a></li>
+                <li><a href="index.html#about">起業部について</a></li>
+                <li><a href="index.html#faq">よくある質問</a></li>
+                <li><a href="index.html#flow">入部までの流れ</a></li>
+                <li><a href="contact.html">お問い合わせ</a></li>
+            </ul>
+        </nav>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/protonet-jquery.inview/1.1.2/jquery.inview.min.js"></script>
+    <script src="js/jquery.inview_set.js"></script>
+
+    <!-- スプレッドシートからデータを読み込むスクリプト -->
+    <script src="js/activity-loader.js"></script>
+
+    <script src="js/main.js"></script>
+
+</body>
+
+</html>
