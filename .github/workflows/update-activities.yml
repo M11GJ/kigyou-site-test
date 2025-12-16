@@ -32,11 +32,28 @@ jobs:
           fi
           
           # 日付でソートしてHTMLを生成
+          # 日付をYYYY.MM.DD形式に変換
           ACTIVITIES_HTML=$(jq -r '
+            def format_date:
+              if . == null then ""
+              elif type == "string" then
+                # ISO形式またはYYYY-MM-DD形式
+                if test("^[0-9]{4}-[0-9]{2}-[0-9]{2}") then
+                  split("T")[0] | split("-") | join(".")
+                # 既にYYYY.MM.DD形式
+                elif test("^[0-9]{4}\\.[0-9]{2}\\.[0-9]{2}") then
+                  .
+                else
+                  # その他の形式はそのまま最初の10文字
+                  .[:10] | gsub("-"; ".")
+                end
+              else
+                tostring | .[:10]
+              end;
             sort_by(.date) | reverse | 
             .[] | 
             "<div class=\"activity-item\">
-                <span class=\"activity-date\">\(.date | split("-") | join("."))</span>
+                <span class=\"activity-date\">\(.date | format_date)</span>
                 <div class=\"activity-content\">
                     <h4>\(.title)</h4>
                     <p>\(.content)</p>
