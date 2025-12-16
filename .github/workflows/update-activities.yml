@@ -17,30 +17,52 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Fetch activities from Spreadsheet
+      - name: Fetch and embed activities
         run: |
           # スプレッドシートからデータを取得
-          curl -L "${{ secrets.SPREADSHEET_API_URL }}" -o data/activities.json
+          curl -L "${{ secrets.SPREADSHEET_API_URL }}" -o /tmp/activities.json
           
           # JSONが有効か確認
-          if ! jq empty data/activities.json 2>/dev/null; then
+          if ! jq empty /tmp/activities.json 2>/dev/null; then
             echo "Error: Invalid JSON received"
             exit 1
           fi
           
-          echo "Successfully fetched activities data"
-          cat data/activities.json
+          # 日付でソートしてHTMLを生成
+          ACTIVITIES_HTML=$(jq -r '
+            sort_by(.date) | reverse | 
+            .[] | 
+            "<div class=\"activity-item\">
+                <span class=\"activity-date\">\(.date | split("-") | join("."))</span>
+                <div class=\"activity-content\">
+                    <h4>\(.title)</h4>
+                    <p>\(.content)</p>
+                </div>
+            </div>"
+          ' /tmp/activities.json)
+          
+          # activity.htmlのマーカー間を置換
+          awk -v activities="$ACTIVITIES_HTML" '
+            /<!-- ACTIVITIES_START -->/ { print; print activities; skip=1; next }
+            /<!-- ACTIVITIES_END -->/ { skip=0 }
+            !skip { print }
+          ' activity.html > /tmp/activity_new.html
+          
+          mv /tmp/activity_new.html activity.html
+          
+          echo "Successfully updated activity.html"
       
       - name: Check for changes
         id: check_changes
         run: |
-          git diff --quiet data/activities.json || echo "changed=true" >> $GITHUB_OUTPUT
+          git diff --quiet activity.html || echo "changed=true" >> $GITHUB_OUTPUT
       
       - name: Commit and push if changed
         if: steps.check_changes.outputs.changed == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/activities.json
-          git commit -m "chore: update activities data [skip ci]"
+          git add activity.html
+          git commit -m "chore: update activities [skip ci]"
           git push
+
